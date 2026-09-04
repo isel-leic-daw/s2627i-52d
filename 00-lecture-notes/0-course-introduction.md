@@ -1,6 +1,7 @@
 ## Introduction
 
-This document contains information about the *Desenvolvimento de Aplicacoes Web* course, for the 2026/2027 Fall Semester.
+This document contains information about the *Desenvolvimento de Aplicacoes Web*
+course, for the 2026/2027 Fall Semester.
 
 ## Grading
 
@@ -20,7 +21,9 @@ Student evaluation and grading is composed of two components:
 
 ## Syllabus and calendar
 
-The syllabus and associated calendar are available at [Calendar](../calendar.md). This calendar also has some of the important dates, namely:
+The syllabus and associated calendar are available at
+[Calendar](../calendar.md). This calendar also has some of the important dates,
+namely:
 
 - When the exercise sets and final project requirements are *published*.
 - When the solutions must be *delivered* by the student groups.
@@ -39,21 +42,29 @@ There will be a summary published for each lecture containing:
 
 ## Resources
 
-- Most of the resources, including lecture notes, code examples, and lecture summaries, will be available in this repository.
+- Most of the resources, including lecture notes, code examples, and lecture
+  summaries, will be available in this repository.
 
-- There is a [Discord](https://discord.com) server for asynchronous and synchronous communication.
-    - The invite link for this server is available in the Moodle page for the course.
-    - Use an identifier with the structure `<first-name>-<number>-<course-section>` (e.g. `Alice-12345-leic51d`).
-    - Join the `#general` channel and the channel of your course section (*turma*).
+- There is a [Discord](https://discord.com) server for asynchronous and
+  synchronous communication.
+    - The invite link for this server is available in the Moodle page for the
+      course.
+    - Use an identifier with the structure
+      `<first-name>-<number>-<course-section>` (e.g. `Alice-12345-leic51d`).
+    - Join the `#general` channel and the channel of your course section
+      (*turma*).
 
-- Moodle will contain non-public information, such as student grades and the Discord invite link.
+- Moodle will contain non-public information, such as student grades and the
+  Discord invite link.
 
 ### Tools
 
 - Java installation.
     - Java >=21.
-    - E.g. [Adoptium](https://projects.eclipse.org/projects/adoptium/downloads) distribution from Eclipse.
-    - [SDKMAN](https://sdkman.io) is a tool to help download and manage Java versions.
+    - E.g. [Adoptium](https://projects.eclipse.org/projects/adoptium/downloads)
+      distribution from Eclipse.
+    - [SDKMAN](https://sdkman.io) is a tool to help download and manage Java
+      versions.
 
 - IDE: [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
     - Note: We will not need any features that require a license.
