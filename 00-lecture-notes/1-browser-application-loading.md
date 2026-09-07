@@ -40,9 +40,8 @@ browser, as well as the `document` API.
     - Notice how a `GET` to `/` returns the content of `index.html` in the
       response message body.
     - Rename the HTML file to `index2.html` and see the result in the browser.
-        - Notice how the `index.html` has a special meaning to the *server*.
-          What is this "special meaning"?
-        - Does it have a special meaning to the browser?
+        - 1. What is the "special meaning" that `index.html` has to the *server*?
+        - 2. Does it have a special meaning to the browser?
     - Rename the HTML file back to `index.html`.
 
 - Change the address to `http://localhost:3000/index.html` and observe the
@@ -59,10 +58,10 @@ console.log(something)
 ```
 
 - Add `<script src="s1.js"></script>` to the HTML file `head` element.
-    - Observe the result in the console.
-    - What is `document`?
-    - What does `document.getElementById("main-heading")` do?
-    - Why is `console.log(mainHeading)` presenting `null`?
+  - Observe the result in the console.
+  - 3. What is `document`?
+  - 4. What does `document.getElementById("main-heading")` do?
+  - 5. Why is `console.log(mainHeading)` presenting `null`?
 
 - Create a file `s2.js` with
 
@@ -73,13 +72,13 @@ console.log(something)
 ```
 
 - Add `<script src="s2.js"></script>` to the HTML file `head` element.
-    - Observe the result of reloading the HTML document.
-    - Why is there an error in the console?
+  - Observe the result of reloading the HTML document.
+  - 6. Why is there an error in the console?
 
 - Add the attribute `type="module"` to the `script` element for `s1.js`.
-    - What is the value presented for `console.log(mainHeading)`?
-    - Does the previous error still exist? Why?
-    - What appears first: `I'm s1` or `I'm s2`?
+  - 7. What is the value presented for `console.log(mainHeading)`?
+  - 8. Does the previous error still exist? Why?
+  - 9. What appears first: `I'm s1` or `I'm s2`?
 
 ## JavaScript modules
 
@@ -93,8 +92,8 @@ export function add(x,y){
 ```
 
 - Add `<script src="add.js"></script>` to the HTML file `head` element.
-    - Observe the error in the console.
-    - Remove `add.js` from `index.html`.
+  - Observe the error in the console.
+  - Remove `add.js` from `index.html`.
 
 - Add the following to the beginning of both `s1.js` and `s2.js`
 
@@ -103,16 +102,16 @@ import { add } from './add.js'
 console.log(add(1,2))
 ```
 
-    - Make sure that the loading of `s1.js` has the `"module"` type and the loading of `s2.js` does not.
-    - What is the error occurring during the document loading and why does it happen?
-    - Add the `"module"` type to the loading of `s2.js`.
-    - Observe the output in the console.
-        - Is the error still occurring?
-        - Is the result of the call to `add` being shown correctly?
-        - How many times is the message `Look, I'm running in a browser` presented?
-    - Observe all HTTP requests made by the browser?
-        - How many requests to `add.js` are there?
-        - How many HTTP requests would there be if the application used `N` modules?
+- Make sure that the loading of `s1.js` has the `"module"` type and the loading of `s2.js` does not.
+  - 10. What is the error occurring during the document loading and why does it happen?
+- Add the `"module"` type to the loading of `s2.js`.
+- Observe the output in the console.
+  - 11. Is the error still occurring?
+  - 12. Is the result of the call to `add` being shown correctly?
+  - 13. How many times is the message `Look, I'm running in a browser` presented?
+- Observe all HTTP requests made by the browser?
+  - 14. How many requests to `add.js` are there?
+  - 15. How many HTTP requests would there be if the application used `N` modules?
 
 ## Theory
 

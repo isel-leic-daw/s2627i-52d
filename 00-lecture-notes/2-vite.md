@@ -23,13 +23,14 @@ browser and the automatic reloading of the document when a file changes.
 
 - Run `npm init`
     - Provide `module` as the `type`, instead of `commonjs`.
-    - Is there a `node_modules` folder present?
+    - 1. Is there a `node_modules` folder present?
 
 - Run `npm install vite --save-dev`
     - Note how a `devDependencies` property was added to `package.json`,
-      containing an object with a `vite` property. What does this mean?
-        - What is the difference between `dependencies` and `devDependencies`?
-    - Is the `node_modules` folder present now? What is its contents?
+      containing an object with a `vite` property.
+        - 2. What does this mean?
+        - 3. What is the difference between `dependencies` and `devDependencies`?
+    - 4. Is the `node_modules` folder present now? What is its contents?
     - More information about `vite` can be found at
       [vite.dev](https://vite.dev/).
 
@@ -43,23 +44,26 @@ browser and the automatic reloading of the document when a file changes.
       [1-browser-application-loading](./1-browser-application-loading.md)
       lecture note.
     - Open a different browser tab and use the following URL on it
-      `http://localhost:5173/s1.js`. What is the result?
+      `http://localhost:5173/s1.js`.
+        - 5. What is the result?
     - Running `npm run dev` seems to have started an HTTP server, that is
       serving the folder contents, similarly to what `serve` does.
     - Open the developer tools on the initial tab (the one with
       `http://localhost:5173`) and observe the network traffic.
         - Note how there are more requests, in addition to the `/`, `/s1.js`,
           `/s2.js`, and `/add.js` ones.
-        - Compare the response to `/` with the contents of `index.html`. Are
-          they the same? If no, what is the difference?
-        - Compare the response to `/s1.js` with the contents of `s1.js`. Are
-          they the same? If no, what is the difference?
+        - Compare the response to `/` with the contents of `index.html`.
+          - 6. Are they the same?
+          - 7. If no, what is the difference?
+        - Compare the response to `/s1.js` with the contents of `s1.js`.
+          - 8. Are they the same?
+          - 9. If no, what is the difference?
     - Open the console tab in the developers tools, ensure it is visible, change
       the context of `something` in `s1.js` and save the file.
-        - Did something happened automatically on the browser's console?
-        - Where there any requests performed by the browser when the `s1.js`
+        - 10. Did something happened automatically on the browser's console?
+        - 11. Where there any requests performed by the browser when the `s1.js`
           file was saved?
-        - How can the browser react to a file being saved?
+        - 12. How can the browser react to a file being saved?
         - On the network tab, locate a previous request to an URL starting with
           `ws:` and observe its `Messages`.
 
@@ -81,14 +85,19 @@ const emailUrl = emailUrlTemplate.expand({
 console.log(emailUrl);
 ```
 
-    - Add `<script src="s3.js" type="module"></script>` to `index.html` (inside the `head` element).
-    - Observe the browser's console output. Did the result of `console.log(emailUrl)` appear in the console?
-    - Observe the HTTP requests in the Network tab. Note how there is a request to `node_modules/.vite/deps/url-template.js`.
-        - Why did the browser do this request?
-        - Observe the contents of the response to `/s3.js`. Is it exactly the same as the `s3.js` file? If no, what is changed?
-
-- Rename `s3.js` to `s3.ts` and add some type information.
-    - Do not forget to also do the renaming in the `index.html` file.
+- Add `<script src="s3.js" type="module"></script>` to `index.html` (inside the
+  `head` element).
+- Observe the browser's console output.
+  - 13. Did the result of `console.log(emailUrl)` appear in the console?
+- Observe the HTTP requests in the Network tab. Note how there is a request to
+  `node_modules/.vite/deps/url-template.js`.
+  - 14. Why did the browser do this request?
+- Observe the contents of the response to `/s3.js`.
+  - 15. Is it exactly the same as the `s3.js` file?
+  - 16. If no, what is changed?
+- Rename `s3.js` to `s3.ts` and add some type information, such as `const
+  emailUrl: string = ...` as shown in listing bellow.
+  - Do not forget to also do the renaming in the `index.html` file.
 
 ```typescript
 import { parseTemplate } from 'url-template';
@@ -103,7 +112,8 @@ const emailUrl: string = emailUrlTemplate.expand({
 console.log(emailUrl);
 ```
 
-    - Observe the contents of the response to `/s3.ts`. Is the type annotation still there?
+- Observe the contents of the response to `/s3.ts`.
+  - 17. Is the type annotation still there?
 
 ## What is Vite
 
