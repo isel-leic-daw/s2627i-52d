@@ -271,7 +271,7 @@ const a1: CanShiftAndHasLength = ['a', 'b']
 
 ## Exercise: type system introduction
 
-- Fix the TypeScript code in the following
+1. Fix the TypeScript code in the following
   [TypeScript Playground](https://www.typescriptlang.org/play/?#code/C4TwDgpgBAKg8gETlAvFA3gEwgZwMYBOAlmMEQPYB2AXFAERgA2AhnhABbmPYFQBm5XsyihII9s2BQcnAK7coAI2h4JlAOYRMAbigBbZiCXRMRPnwgEIlKUUpQIrdlHJ48sq5TZ0AvgCg-AHpAqDBiPSIyADdoUVw-PCocKWYAZWBiDVp4JFR6dghGRnI6BKSUgDlZPWUCbMRkNABGACYAZgAWAFYyymSoZgAhci5HGlgGvIzZCADggYICQxxe-rSMu3UAQUXDety0AG06AAlC4roAGnoAdUFuOgBdOZDyRQArCDwpOJW4qHSsmwNjy6D8UAhUEozD0EH2cEu4MhlEUdQmSER-lWKUYRDY8NBSIh0NhtDoW1x3kRkKhqNorU6PSx8xw1RE4HifFkXjIVCgmHIqXIsOA7E2AAo7GBZMB4QBKDABGlmKDiuLkPhQKUy1AoNB0ZKZdR0BVgmk0xJ9UYAOmK6kllGlwGtwHIAFUwJACABhZg4CDiuVyolQHwORj+xXmyGWnA2u0Op1QAC0UDawZp-ixsZSuxAcD46SNcAIVRqlhwBKO5MpECuUAZ3WeOdCzCIBBukXYWzLtS2lEwWyLmyrUEOja61xreLrzyCIVM+HCdkkWmkbN+fn+ACVcPIpGg-AAfDAAazsmHh10sBEEtAAootBP4T+hzwOr9JgJJZJWodVaixLkeQoewBX7chRUsGAxQ0cUrFZRhZSgXdEOAU0QxwAB3SJVHgvckOtd9MAw6MITwP1oDoSgIGALDBFPZMb0EOhaDNMiLSSeNyHtBD92tZiCAzDjIVRRxT20ENMykmNKPyYBgDAZMELAJI6zYmTo1jbjeII51iOEkSlCsZgJM00MQyzPwgA).
 
 ## Exercise: `createElement` function
@@ -312,13 +312,15 @@ createElement("a", {}, true)
 createElement("a", {}, [true])
 ```
 
-- Change the type of the parameters so that the `any` type is *never* used,
+2. Change the type of the parameters so that the `any` type is *never* used,
   and:
     - The "valid usages" don't produce any compiler error.
     - The "invalid usages" produce the expected compiler error.
-- Implement the `createElement` body.
+3. Implement the `createElement` body.
+
 - Use the [TypeScript Playground](https://www.typescriptlang.org/play) to test
   the type-checking.
+
 - Consider the following type.
 
 ```typescript
@@ -330,7 +332,7 @@ type Student = {
 }
 ```
 
-Create the following function, using the `createElement` function defined above
+4. Create the following function, using the `createElement` function defined above
 and representing the array of students in a table. Try not to use any DOM
 functions directly.
 
