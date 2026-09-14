@@ -4,8 +4,8 @@ Guided set of exercises to introduce the [React](https://react.dev/) library.
 
 ## Build environment and dependencies
 
-- Create a `react-intro` folder and move into it.
-- Run `npm init`, providing the default values to all questions.
+- Create a `lab04-react` folder and move into it.
+- Run `npm init` and select `module` for the package type.
 - Install the production (i.e. runtime) dependencies, which, for the time being,
   are only the React libraries.
 
@@ -127,15 +127,17 @@ root.render(
 );
 ```
 
-- [JSX](https://facebook.github.io/jsx/) is an extension to the JavaScript
+- [JSX](https://react.dev/learn/writing-markup-with-jsx) is an extension to the JavaScript
   language, and also to the TypeScript language, allowing the definition of
   expressions using an XML-like syntax.
   - These JSX expressions are converted into JavaScript expressions by build
     tools before the JavaScript is evaluated in the browser or on other
     execution environments, such as Node. JSX is not supported directly by the
     execution environments.
-  - By default, the Vite build tool will convert JSX expressions into calls to
-    the `React.createElement` function.
+  - In a current React + Vite setup, JSX is usually compiled using the modern
+    JSX runtime. That means the generated JavaScript typically imports helper
+    functions from `react/jsx-runtime` instead of calling
+    `React.createElement` directly.
   - **Q.2.** Try to identify the meaning of the first, second, and remaining
     parameters to the `React.createElement` function and how they map into the
     JSX syntax.
@@ -144,15 +146,17 @@ root.render(
 
 - Observe the payload of the response produced by the Vite server to the
   `/src/main.tsx` GET request, namely the argument to the `root.render` call.
-  Note how that script is using `React.createElement` instead of the JSX syntax.
-  - The Vite build tool will convert JSX expressions into JavaScript
-    expressions, using `React.createElement`, before scripts are returned to the
-    browser.
+  Note how that script is not using the JSX syntax anymore.
+  - In current React projects, Vite usually transforms JSX into calls to helper
+    functions imported from `react/jsx-runtime`.
+  - `React.createElement` is still the conceptual model for this section and is
+    still used directly when you call it yourself, but it is no longer the
+    default output you should expect from the JSX transform.
 
-- Replace the original JSX expression with each one of the expressions below and
-  observe the resulting JavaScript expression.
-  - `<a href="https://facebook.github.io/jsx/">JSX</a>`
-  - `<a href="https://facebook.github.io/jsx/"><em>JSX</em></a>`
+- Use the [TS playground](https://www.typescriptlang.org/play/?#code/Q) to 
+  observe the resulting JavaScript expression from bellow JSX expressions:
+  - `<a href="https://react.dev/learn/writing-markup-with-jsx">JSX</a>`
+  - `<a href="https://react.dev/learn/writing-markup-with-jsx"><em>JSX</em></a>`
   - `<p>2 + 3</p>`
   - `<p>{2 + 3}</p>`
   - `<ul>{["hello", "react"].map(it => <li>{it}</li>)}</ul>`
@@ -163,8 +167,11 @@ root.render(
 
 - Note how a JSX expression can contain JavaScript/TypeScript expressions
   inside, which can also then contain other JSX expressions.
-- Note how JSX expressions are just an alternative way of defining expressions
-  involving calls to `React.createElement`.
+- Note how JSX expressions are just an alternative way of defining UI
+  expressions that are compiled into regular JavaScript before execution.
+- In current React projects, that generated JavaScript often uses helpers from
+  `react/jsx-runtime`, even though JSX still represents the same tree of React
+  elements.
 - When using the React library it is very common to use the JSX syntax to define
   the trees of React elements.
 
@@ -219,7 +226,7 @@ export function createMutationObserver() {
 
 This function will allow us to observe mutations to the DOM.
 
-- Create a new `main2.txs` with the following code.
+- Create a new `main2.tsx` with the following code.
   - Do not forget to import `createMutationObserver` and initialize the `root`
     variable.
 
@@ -248,7 +255,7 @@ function nextModel(model: Model): Model {
 
 // Function to produce a view given a model,
 // where the view is a React virtual node tree represented by the root element
-function computeView(model: Model): ReactElement {
+function computeView(model: Model) {
     return (
         <ul>
             {model.items.map((it) => (
@@ -299,8 +306,8 @@ function computeView(model: Model): ReactElement {
     `computeView` function. Repeat the same experiment of Q.6. and observe the
     behavior. What changed? Why?
 
-- Read [Virtual DOM and
-  Internals](https://legacy.reactjs.org/docs/faq-internals.html).
+- Read [Describing the UI](https://react.dev/learn/describing-the-ui) and
+  [Preserving and Resetting State](https://react.dev/learn/preserving-and-resetting-state).
 
 - When using the React library we produce views, defined as React elements, to
   express the final state of the user interface, without considering the current
