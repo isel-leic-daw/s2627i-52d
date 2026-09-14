@@ -1,37 +1,36 @@
-= An introduction to React
+# React - Introduction
 
-== Introduction
+Guided set of exercises to introduce the [React](https://react.dev/) library.
 
-Guided set of exercises to introduce the link:https://react.dev/[React] library.
+## Build environment and dependencies
 
-== Build environment and dependencies
+- Create a `react-intro` folder and move into it.
+- Run `npm init`, providing the default values to all questions.
+- Install the production (i.e. runtime) dependencies, which, for the time being,
+  are only the React libraries.
 
-* Create a `react-intro` folder and move into it.
-* Run `npm init`, providing the default values to all questions.
-* Install the _production_ (i.e. runtime) dependencies, which, for the time
-being, are only the React libraries.
-
-[source, shell]
-----
+```sh
 npm install --save-prod react react-dom
-----
+```
 
-The reason why the React library is divided into (at least) two packages will be clarified further on.
+The reason why the React library is divided into at least two packages will be
+clarified further on.
 
-* Install the _development_ (i.e. build) dependencies:
-    ** `vite` - the development and build tool.
-    ** `@types/react` and `@types/react-dom` - type information for the `react` and `react-dom` libraries.
-        *** *Q.1.* Why are the packages with type information considered _development dependencies_?
+- Install the development (i.e. build) dependencies:
+  - `vite` - the development and build tool.
+  - `@types/react` and `@types/react-dom` - type information for the `react` and
+    `react-dom` libraries.
+    - **Q.1.** Why are the packages with type information considered development
+      dependencies?
 
-[source, shell]
-----
+```sh
 npm install --save-dev vite @types/react @types/react-dom
-----
+```
 
-* Edit the `package.json` file to add the `dev` script. After this, running `npm run dev` will start the Vite development server.
+- Edit the `package.json` file to add the `dev` script. After this, running `npm
+  run dev` will start the Vite development server.
 
-[source, shell]
-----
+```json
 {
     ...
     "scripts": {
@@ -40,14 +39,13 @@ npm install --save-dev vite @types/react @types/react-dom
     },
     ...
 }
-----
+```
 
-== Starting to use the React library
+## Starting to use the React library
 
-* Create an `index.html` file in the root folder
+- Create an `index.html` file in the root folder.
 
-[source, html]
-----
+```html
 <!doctype html>
 <html lang="en">
   <head>
@@ -58,12 +56,13 @@ npm install --save-dev vite @types/react @types/react-dom
     <div id="container"></div>
   </body>
 </html>
-----
+```
 
-* Create a `main.ts` in the new `src` sub-folder, with the following content. By default, all TypeScript source files will be located in the `src` folder or sub-folders.
+- Create a `main.ts` in the new `src` sub-folder, with the following content. By
+  default, all TypeScript source files will be located in the `src` folder or
+  sub-folders.
 
-[source, typescript]
-----
+```ts
 import { createRoot } from "react-dom/client";
 import React from "react";
 
@@ -85,16 +84,17 @@ root.render(
     )
   )
 );
-----
+```
 
-* This example:
-    ** Creates a _react root_ referencing a DOM element.
-    ** Asks the root to render a tree of _React elements_ created via the `React.createElement` function.    
-        *** A top-level `div`.    
-            **** An `h3` nested inside this `div` with some text.
-            **** A `p`, also nested inside this `div`, with some text and an `a` element.
-[source, js]
-----
+- This example:
+  - Creates a react root referencing a DOM element.
+  - Asks the root to render a tree of React elements created via the
+    `React.createElement` function.
+    - A top-level `div`.
+    - An `h3` nested inside this `div` with some text.
+    - A `p`, also nested inside this `div`, with some text and an `a` element.
+
+```text
 div
 ├── h3
 │   └── "Hello React"
@@ -103,76 +103,100 @@ div
     └── a (href="https://react.dev")
         ├── "React"
         └── " application"
+```
 
-----
-* Observe the resulting user interface in the browser.
-* When using the React library, the user interface is defined by creating trees of _React elements_.
+- Observe the resulting user interface in the browser.
+- When using the React library, the user interface is defined by creating trees
+  of React elements.
 
-== The JSX syntax
+## The JSX syntax
 
-* Rename the file to `main.tsx`, i.e., change the extension from `.ts` to `.tsx`.
-    ** On `index.html`, load `main.tsx` instead of `main.ts`.
+- Rename the file to `main.tsx`, i.e., change the extension from `.ts` to
+  `.tsx`.
+  - On `index.html`, load `main.tsx` instead of `main.ts`.
 
-* Replace the `root.render` call with the following code. Note how the argument to `root.render` is now an *_expression_* written in an XML/HTML-like syntax. 
+- Replace the `root.render` call with the following code. Note how the argument
+  to `root.render` is now an expression written in an XML/HTML-like syntax.
 
-[source, typescript]
-----
+```ts
 root.render(
   <div>
     <h3>Hello React</h3>
     <p>My first <a href="https://react.dev">React</a> application</p>
   </div>
 );
-----
+```
 
-* link:https://facebook.github.io/jsx/[JSX] is an extension to the JavaScript language (and also to the TypeScript language), allowing the definition of _expressions_ using an XML-like syntax.
-    ** These JSX expressions are converted into JavaScript expressions by build tools _before_ the JavaScript is evaluated in the browser or on other execution environments, such as Node. The JSX is _not_ supported directly by the execution environments.
-    ** By default, the Vite build tool will convert JSX expressions into calls to the `React.createElement` function.
-    ** *Q.2.* Try to identify the meaning of the first, second, and remaining parameters to the `React.createElement` function and how they map into the JSX syntax.
+- [JSX](https://facebook.github.io/jsx/) is an extension to the JavaScript
+  language, and also to the TypeScript language, allowing the definition of
+  expressions using an XML-like syntax.
+  - These JSX expressions are converted into JavaScript expressions by build
+    tools before the JavaScript is evaluated in the browser or on other
+    execution environments, such as Node. JSX is not supported directly by the
+    execution environments.
+  - By default, the Vite build tool will convert JSX expressions into calls to
+    the `React.createElement` function.
+  - **Q.2.** Try to identify the meaning of the first, second, and remaining
+    parameters to the `React.createElement` function and how they map into the
+    JSX syntax.
 
-* Observe the resulting user interface in the browser.
+- Observe the resulting user interface in the browser.
 
-* Observe the payload of the response produced by the Vite server to the `/src/main.tsx` GET request, namely the argument to the `root.render` call. Note how that script is using `React.createElement` instead of the JSX syntax.
-    ** The Vite build tool will convert JSX expressions into JavaScript expressions, using `React.createElement`, before scripts are returned to the browser.
+- Observe the payload of the response produced by the Vite server to the
+  `/src/main.tsx` GET request, namely the argument to the `root.render` call.
+  Note how that script is using `React.createElement` instead of the JSX syntax.
+  - The Vite build tool will convert JSX expressions into JavaScript
+    expressions, using `React.createElement`, before scripts are returned to the
+    browser.
 
-* Replace the original JSX expression with each one of the expressions below and observe the resulting JavaScript expression.
-    ** `<a href="https://facebook.github.io/jsx/">JSX</a>`
-    ** `<a href="https://facebook.github.io/jsx/"><em>JSX</em></a>`
-    ** `<p>2 + 3</p>`
-    ** `<p>{2 + 3}</p>`
-    ** `<ul>{["hello", "react"].map(it => <li>{it}</li>)}</ul>`
-    ** `<ul>["hello", "react"].map(it => <li>it</li>)</ul>`
+- Replace the original JSX expression with each one of the expressions below and
+  observe the resulting JavaScript expression.
+  - `<a href="https://facebook.github.io/jsx/">JSX</a>`
+  - `<a href="https://facebook.github.io/jsx/"><em>JSX</em></a>`
+  - `<p>2 + 3</p>`
+  - `<p>{2 + 3}</p>`
+  - `<ul>{["hello", "react"].map(it => <li>{it}</li>)}</ul>`
+  - `<ul>["hello", "react"].map(it => <li>it</li>)</ul>`
 
-* *Q.3.* What is the effect of adding an expression delimited by `{` and `}` inside a JSX expression?
+- **Q.3.** What is the effect of adding an expression delimited by `{` and `}`
+  inside a JSX expression?
 
-* Note how a JSX expression can contain JavaScript/TypeScript expressions inside, which can also then contain other JSX expressions.
+- Note how a JSX expression can contain JavaScript/TypeScript expressions
+  inside, which can also then contain other JSX expressions.
+- Note how JSX expressions are just an alternative way of defining expressions
+  involving calls to `React.createElement`.
+- When using the React library it is very common to use the JSX syntax to define
+  the trees of React elements.
 
-* Note how JSX expressions _are just_ an alternative way of defining expressions involving calls to `React.createElement`.
+## Virtual DOM
 
-* When using the React library it is very common to use the JSX syntax to define the trees of React elements.
+- **Q.4.** What is the result of running the following two statements by adding
+  them to `main.tsx`?
+  - `console.log(document.createElement("p") instanceof HTMLElement)`
+  - `console.log(React.createElement("p") instanceof HTMLElement)`
 
-== Virtual DOM
+- **Q.5.** What is the result of running the following statement by adding it to
+  `main.tsx`?
+  - `document.getElementById("container")!.appendChild(React.createElement("p"))`
 
-* *Q.4.* What is the result of running the following two statements (by adding them to `main.tsx`)?
-    ** `console.log(document.createElement("p") instanceof HTMLElement)`
-    ** `console.log(React.createElement("p") instanceof HTMLElement)`
+- Note:
+  - Elements created by `React.createElement` are not of the same type as the
+    elements created by `document.createElement`.
+  - Elements created by `React.createElement` cannot be added to the DOM.
 
-* *Q.5.* What is the result of running the following statement (by adding it to `main.tsx`)?
-    ** `document.getElementById("container")!.appendChild(React.createElement("p"))`
+- The function `React.createElement` does not create DOM elements. Instead, it
+  creates Virtual DOM elements.
+  - DOM - tree of elements and other nodes, created via the `document` object,
+    namely `document.createElement`.
+  - Virtual DOM - tree of elements, created via the `React.createElement`
+    function.
 
-* Note:
-    ** How elements created by `React.createElement` are not of the same type as the elements created by `document.createElement`.
-    ** How elements created by `React.createElement` cannot be added to the DOM.
+- The relation between the DOM and the Virtual DOM will be explored below.
+  Before that, another example.
 
-* The function `React.createElement` does _not_ create DOM elements. Instead, it creates _Virtual DOM_ elements. 
-    ** DOM - tree of elements and other nodes, created via the `document` object, namely `document.createElement`.
-    ** Virtual DOM - tree of elements, created via the `React.createElement` function. 
+- Create a new file called `mutationObserver.ts` with the following content.
 
-* The relation between the DOM and the Virtual DOM will be explored below. Before that, another example.
-
-* Create a new file called `mutationObserver.ts` with the following content.
-[source, typescript]
-----
+```ts
 export function createMutationObserver() {
   return new MutationObserver((mutationsList, observer) => {
     for (const mutation of mutationsList) {
@@ -191,14 +215,15 @@ export function createMutationObserver() {
     }
   });
 }
-----
+```
+
 This function will allow us to observe mutations to the DOM.
 
-* Create a new `main2.txs` with the following code
-    ** Do not forget to import `createMutationObserver` and initialize the `root` variable.
+- Create a new `main2.txs` with the following code.
+  - Do not forget to import `createMutationObserver` and initialize the `root`
+    variable.
 
-[source, typescript]
-----
+```ts
 // The model
 type Model = {
     // Just a list of strings
@@ -257,33 +282,41 @@ function computeView(model: Model): ReactElement {
         subtree: true,
     });
 })();
-----
+```
 
-* Note how `root.render` is called every two seconds with a _new_ React element tree (i.e. Virtual DOM)) with the view for the current model.
+- Note how `root.render` is called every two seconds with a new React element
+  tree, i.e. Virtual DOM, with the view for the current model.
+- Note how there aren't any mutations to the Virtual DOM. A new virtual DOM is
+  created on every two seconds interval.
+- Observe the resulting user interface in the browser, as well as the messages
+  in the browser's console.
+  - **Q.6.** Write something in an input box and check if the content is cleared
+    after the interval. Does that suggest that the `input` DOM element was
+    deleted or not deleted after the interval?
+  - **Q.7.** On each two second interval, how many `div` elements are being
+    added and removed from the DOM?
+  - **Q.8.** Remove the `key={it}` property from the `div` element in the
+    `computeView` function. Repeat the same experiment of Q.6. and observe the
+    behavior. What changed? Why?
 
-* Note how there aren't any mutations to the Virtual DOM. A new virtual DOM is created on every two seconds interval.
+- Read [Virtual DOM and
+  Internals](https://legacy.reactjs.org/docs/faq-internals.html).
 
-* Observe the resulting user interface in the browser, as well as the messages in the browser's console.
+- When using the React library we produce views, defined as React elements, to
+  express the final state of the user interface, without considering the current
+  state of the user interface.
+  - No mutations are done directly to the DOM.
+  - When producing the virtual DOM to reflect the current model state, the
+    previous state doesn't need to be considered.
+  - It is the React library that, using both the current DOM state and the new
+    Virtual DOM, performs the set of required mutations to the DOM so that it
+    starts reflecting the new Virtual DOM: reconciliation.
 
-    ** *Q.6.* Write something in an input box and check if the content is cleared after the interval. Does that suggest that the `input` DOM element was deleted or not deleted after the interval? 
+## React Components
 
-    ** *Q.7.* On each two second interval, how many `div` elements are being added and removed from the DOM?
+- Create the following function.
 
-    ** *Q.8.* Remove the `key={it}` property from the `div` element in the `computeView` function. Repeat the same experiment of Q.6. and observe the behavior. What changed? Why?
-
-* Read link:https://legacy.reactjs.org/docs/faq-internals.html[Virtual DOM and Internals].
-
-* When using the React library we produce views, defined as React elements, to express the final state of the user interface, without considering the current state of the user interface.
-    ** No mutations are done directly to the DOM.
-    ** When producing the virtual DOM to reflect the current model state, the previous state doesn't need to be considered.
-    ** It is the React library that, using both the current DOM state and the new Virtual DOM, performs the set of required mutations to the DOM so that it starts reflecting the new Virtual DOM - *_reconciliation_*
-
-== React Components
-
-* Create the following function
-
-[source, typescript]
-----
+```ts
 function Item({ label }: { label: string }): ReactElement {
   return (
     <div>
@@ -292,12 +325,11 @@ function Item({ label }: { label: string }): ReactElement {
     </div>
   );
 }
-----
+```
 
-* Replace the `computeView` function with
+- Replace the `computeView` function with:
 
-[source, typescript]
-----
+```ts
 function computeView(model: Model): ReactElement {
   return (
     <ul>
@@ -307,20 +339,28 @@ function computeView(model: Model): ReactElement {
     </ul>
   );
 }
-----
+```
 
-* The function `Item` is a React _component_.
-    ** This function receives a object called the properties or "props" for short, which in this case contains a `label` property.
-    ** React _components_ are functions from properties (props) to React elements.
-    ** React components typically represent reusable user interface blocks.
+- The function `Item` is a React component.
+  - This function receives an object called the properties, or props for short,
+    which in this case contains a `label` property.
+  - React components are functions from properties, props, to React elements.
+  - React components typically represent reusable user interface blocks.
 
-* React components can be used instead of primitive HTML elements when defining React element trees.
-    ** Note how the `computeView` function now uses `<Item label={it} />`.
-    ** This JSX expression is equivalent to `React.createElement(Item, { label: it})`.
-    ** *Note that the `computeView` does _not_ call the `Item` function; it creates a React element that refers to the `Item` function instead.*
+- React components can be used instead of primitive HTML elements when defining
+  React element trees.
+  - Note how the `computeView` function now uses `<Item label={it} />`.
+  - This JSX expression is equivalent to `React.createElement(Item, { label: it
+    })`.
+  - **Note that `computeView` does not call the `Item` function; it creates a
+    React element that refers to the `Item` function instead.**
 
-* Component functions should be _pure_.
-    ** The goal of a React component is to map properties (and other things) into a React element tree.
-    ** Application code _never_ calls React components. Instead, application code creates React elements that refer to React components.
-    ** It is the React library that calls the React component functions.
-    ** This calling is _not_ deterministic, i.e., it is not possible to know exactly when and how many times React calls a component function. This is why component functions should be pure, i.e., free from side-effects.
+- Component functions should be pure.
+  - The goal of a React component is to map properties, and other things, into a
+    React element tree.
+  - Application code never calls React components. Instead, application code
+    creates React elements that refer to React components.
+  - It is the React library that calls the React component functions.
+  - This calling is not deterministic, i.e. it is not possible to know exactly
+    when and how many times React calls a component function. This is why
+    component functions should be pure, i.e. free from side-effects.
