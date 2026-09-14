@@ -505,7 +505,17 @@ A JSX expression can have an inner JavaScript *expression* but not a
 *statement*. That's why, in the previous example, we needed to use a
 *functional* `map` instead of a more *imperative* `for` loop.
 
-> [!NOTE] When using more recent React versions, the recommended translation
+> **NOTE** When using more recent React versions, the recommended translation
 > from JSX is into a `jsx` function and not into the `createElement` function.
 > In this lecture note, we use the *classic* translation because we consider it
 > to be easier to understand.
+
+A React component is a function that receives an object with input properties,
+usually called `props`, and returns a React element tree describing part of the
+user interface. When JSX contains an element such as `<Item label="A" />`, the
+name `Item` refers to a component instead of a primitive HTML tag. Conceptually,
+this is similar to writing `React.createElement(Item, { label: "A" })`. It is
+important to note that application code does not call component functions to
+manipulate the DOM directly. Instead, React is responsible for invoking
+components during rendering, which is why component functions should be pure and
+free from side effects.
