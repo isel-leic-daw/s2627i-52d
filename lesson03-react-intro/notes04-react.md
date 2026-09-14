@@ -175,14 +175,25 @@ root.render(
 - When using the React library it is very common to use the JSX syntax to define
   the trees of React elements.
 
+- **Q.4.**  Using **TypeScript and JSX**, create a function called `createList` that:
+  * receives a `string[]` as its parameter;
+  * returns a `React.ReactElement` representing an unordered list (`ul`);
+  * creates one list item (`li`) for each string in the array;
+  * wraps each string in a `span` element with the `className` attribute set to `"item"`.
+  * **NOTE:** the returned JSX is wrapped in parentheses;
+
+- Test the function by passing its return value directly to `root.render()`, for example: `root.render(createList(["Apple", "Banana", "Orange"]));`
+
+
+
 ## Virtual DOM
 
-- **Q.4.** What is the result of running the following two statements by adding
+- **Q.5.** What is the result of running the following two statements by adding
   them to `main.tsx`?
   - `console.log(document.createElement("p") instanceof HTMLElement)`
   - `console.log(React.createElement("p") instanceof HTMLElement)`
 
-- **Q.5.** What is the result of running the following statement by adding it to
+- **Q.6.** What is the result of running the following statement by adding it to
   `main.tsx`?
   - `document.getElementById("container")!.appendChild(React.createElement("p"))`
 
@@ -297,13 +308,13 @@ function computeView(model: Model) {
   created on every two seconds interval.
 - Observe the resulting user interface in the browser, as well as the messages
   in the browser's console.
-  - **Q.6.** Write something in an input box and check if the content is cleared
+  - **Q.7.** Write something in an input box and check if the content is cleared
     after the interval. Does that suggest that the `input` DOM element was
     deleted or not deleted after the interval?
-  - **Q.7.** On each two second interval, how many `div` elements are being
+  - **Q.8.** On each two second interval, how many `div` elements are being
     added and removed from the DOM?
-  - **Q.8.** Remove the `key={it}` property from the `div` element in the
-    `computeView` function. Repeat the same experiment of Q.6. and observe the
+  - **Q.9.** Remove the `key={it}` property from the `div` element in the
+    `computeView` function. Repeat the same experiment of Q.7. and observe the
     behavior. What changed? Why?
 
 - Read [Describing the UI](https://react.dev/learn/describing-the-ui) and
@@ -371,3 +382,130 @@ function computeView(model: Model): ReactElement {
   - This calling is not deterministic, i.e. it is not possible to know exactly
     when and how many times React calls a component function. This is why
     component functions should be pure, i.e. free from side-effects.
+
+## Theory
+
+In the [React](https://react.dev/) library, the definition of user interfaces is
+done by creating a tree of elements and text nodes. This is achieved via the
+`React.createElement` function, which has the following parameters:
+
+- The HTML element name or a reference to a React component.
+- An object with the element attributes.
+- A variable argument list containing the element's children.
+
+JSX is a syntactical extension to the JavaScript language (TSX for TypeScript)
+allowing the use of an HTML-like syntax to define these trees of elements. The
+following JSX expression is fully equivalent to the previous TypeScript
+expression.
+
+The browser's JavaScript execution environment does not support the JSX syntax
+extension. This means that JSX expressions need to be converted into their pure
+JavaScript equivalents, during the build process and before the program is
+provided to the browser. This is similar to the static type erasure process
+applied to TypeScript programs during the build process. In fact, the TypeScript
+compiler can do both in a single pass: remove the static type information and
+translate JSX expressions into the equivalent JavaScript expressions.
+
+It is important to highlight that:
+
+* A JSX expression does *not* in any way interact with the browser's DOM. It is
+  a side-effect-free expression that evaluates to a React element.
+* It is an expression, meaning that it can be used anywhere an expression can be
+  used.
+
+The following code illustrates the use of JSX expressions in different places.
+
+```typescript
+import React from "react";
+
+// As elements of a literal array
+const elements = [
+    <p>Hello</p>,
+    <p>World</p>
+];
+
+// As arguments to functions
+function doSomethingWithElements(elem: React.ReactElement) { /*...*/ }
+
+doSomethingWithElements(<p>used in an argument</p>);
+
+// As object property values
+const anObject = {
+    aParagraph: <p>Hello</p>,
+    anInput: <input type="text" />,
+};
+```
+
+> [!TIP] Go to the [TypeScript Playground](https://www.typescriptlang.org/play),
+> paste the above code, and see the resulting pure JavaScript code in the right
+> pane.
+
+JSX expressions allow TypeScript expressions inside them. Consider the following
+code excerpt:
+
+```typescript
+import React from "react";
+
+const expr0 = <p>1+2</p>;
+const expr1 = <p>{1+2}</p>;
+```
+
+The translation to pure JavaScript results in the following code:
+
+```typescript
+import React from "react";
+
+const expr0 = React.createElement("p", null, "1+2");
+const expr1 = React.createElement("p", null, 1 + 2);
+```
+
+Note how, in `expr0`, the `1+2` inside the `p` element is interpreted as a
+*literal string* and used that way for the third argument of the `createElement`
+call. In contrast, for `expr1`, the `1+2` is interpreted as a JavaScript
+expression and provided that way to the `createElement` function.
+
+That is, it is possible to include a JavaScript expression inside a JSX
+expression by surrounding it with curly braces (`{` and `}`).
+
+The following example is slightly more complex.
+
+```typescript
+import React from "react";
+
+const names = ["alice", "bob"];
+
+const element: React.ReactElement =
+    <div>
+        {names.map(name => <p>{name}</p>)}
+    </div>;
+```
+
+The translated pure JavaScript is the following:
+
+```typescript
+import React from "react";
+
+const names = ["alice", "bob"];
+
+const element = React.createElement(
+    "div",
+    null,
+    names.map(name => React.createElement("p", null, name))
+);
+```
+
+Note how:
+
+* The JSX expression contains an inner JavaScript expression (the
+  `names.map(...)` expression).
+* The inner JavaScript expression has itself an inner JSX expression (the
+  `<p>...</p>` expression).
+
+A JSX expression can have an inner JavaScript *expression* but not a
+*statement*. That's why, in the previous example, we needed to use a
+*functional* `map` instead of a more *imperative* `for` loop.
+
+> [!NOTE] When using more recent React versions, the recommended translation
+> from JSX is into a `jsx` function and not into the `createElement` function.
+> In this lecture note, we use the *classic* translation because we consider it
+> to be easier to understand.
