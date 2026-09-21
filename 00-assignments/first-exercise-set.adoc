@@ -1,0 +1,208 @@
+= First Exercise Set
+
+== Introduction
+
+This document contains the exercises for the first _DAW_ exercise set.
+The solutions to these exercises must be delivered by creating the `0.1.0` tag in the group's GitHub repository, no later than *2026-10-04 23:59 (Lisbon time)*.
+
+== Exercises
+
+=== Exercise 1
+
+Implement a React hook named `useStateWithUndo`, with the following signature.
+
+[#useStateWithUndo,typescript]
+----
+function useStateWithUndo<T>(initialValue: T): [
+    observedValue: T,
+    setValue: (newValue: T) => void,
+    hasUndo: boolean,
+    undo: () => void
+]
+----
+
+This function behaves similarly to `useState`; however, the returned array has two additional elements:
+
+* The `hasUndo` element indicates whether there is a value prior to the observed value.
+* The `undo` function sets the current state to the previous state, if it exists.
+
+Undo supports multiple levels: successive calls to `undo` go back through all the previous values, and `hasUndo` remains `true` while there is still a previous value to go back to.
+Calling `setValue` with a value equal to the current observed value (compared with `Object.is`) has no effect, i.e., it changes neither the state nor the undo history.
+
+Unlike the setter returned by `useState`, `setValue` accepts only the new value, not an updater function (i.e., a function that computes the new state from the previous one).
+
+Create a program to illustrate the usage of this hook function.
+
+=== Exercise 2
+
+Implement an `Input` React component with the following properties:
+
+* `onChange: (newValue: string) => void`
+* `delay: number`, where `delay > 0` must hold.
+
+This component displays a text box and calls the `onChange` callback with the current value whenever:
+
+* The text box loses focus (event `blur`).
+* `delay` milliseconds have elapsed since the last change to the content.
+
+The solution must identify the edge cases of this specification and define the behavior for each of them.
+For example, the text box may lose focus while the `delay` period since the last change is still running.
+A possible defined behavior for this edge case is to call `onChange` immediately on `blur` and cancel the pending `delay` timer, so that `onChange` isn't called twice with the same value.
+
+Create a program that illustrates the usage of this component to implement a filtered list of strings, where the filter is defined by the `Input` component's contents.
+
+=== Exercise 3
+
+An application needs to access and _react_ to changes in the user's preferred languages list.
+This list is available via the link:https://developer.mozilla.org/en-US/docs/Web/API/Navigator/languages[`navigator.languages`] read-only property.
+Changes to this list trigger the link:https://developer.mozilla.org/en-US/docs/Web/API/Window/languagechange_event[`languagechange`] event.
+The application also needs to provide a way for users to override this list directly in the application (e.g., provide a _language picker_).
+
+Given this context, create a TypeScript module exporting:
+
+* A `LanguageProvider` component, used to wrap the component subtree that needs this functionality.
+* A `useLanguages` hook function that returns the _effective_ languages list, a function to override it, and a function to remove the override.
+
+The _effective_ languages list is the override list, if one is set; otherwise, it is the value of `navigator.languages`.
+Calling `useLanguages` outside a `LanguageProvider` throws an `Error`.
+
+Create a program to illustrate the usage of both the provider component and the hook function.
+
+=== Exercise 4
+
+Consider the following TypeScript definitions.
+
+[#useFetch-definitions,typescript]
+----
+import React from 'react'
+
+/**
+ * The current status of a fetch
+ */
+export type FetchStatus =
+| {kind: "loading", stale?: FetchSuccess}
+| {kind: "error", error: Error}
+| FetchResponse
+
+/**
+ * A completed fetch that produced an HTTP response
+ */
+export type FetchResponse =
+| {kind: "non-success", response: Response, body: ResponseBody}
+| FetchSuccess
+
+/**
+ * A completed fetch that produced a successful HTTP response
+ */
+export type FetchSuccess = {kind: "success", response: Response, body: ResponseBody}
+
+/**
+ * The body of an HTTP response, already read and converted according to its content type
+ */
+export type ResponseBody =
+| {kind: "none"}
+| {kind: "json", contentType: string, json: unknown}
+| {kind: "text", contentType: string, text: string}
+| {kind: "bytes", contentType: string, bytes: ArrayBuffer}
+
+/**
+ * A function that starts the HTTP request associated with `key`, passing `abortSignal` to it,
+ * and returns the response without reading its body
+ */
+export type Fetcher = (abortSignal: AbortSignal, key: string) => Promise<Response>
+
+/**
+ * The result of the `useFetch` hook:
+ * - `status` - the current fetch status
+ * - `refetch` - a function that repeats the fetch for the current `key`, cancelling any ongoing request
+ */
+export type UseFetchResult = {
+    status: FetchStatus,
+    refetch: () => void,
+}
+
+/**
+ * The `useFetch` hook:
+ * - `key` - the key identifying the requested resource, also used as the cache key
+ * - `fetcher` - the function that performs the HTTP request for `key`
+ */
+export function useFetch(key: string, fetcher: Fetcher): UseFetchResult {
+    throw new Error("TODO")
+}
+
+/**
+ * The result of the `useFetchCache` hook:
+ * - `invalidate` - a function that invalidates the cache entry associated with `key`
+ */
+export type UseFetchCacheResult = {
+    invalidate: (key: string) => void
+}
+
+/**
+ * The `useFetchCache` hook, providing access to the cache of the enclosing `FetchCacheProvider`
+ */
+export function useFetchCache(): UseFetchCacheResult {
+    throw new Error("TODO")
+}
+
+export type FetchCacheProviderProps = {
+    children: React.ReactNode
+}
+
+/**
+ * A component that provides a fetch cache to its `children` subtree
+ */
+export function FetchCacheProvider(props: FetchCacheProviderProps): React.ReactElement {
+    throw new Error("TODO")
+}
+----
+
+`useFetch` is a React hook that performs HTTP requests and caches successful responses for future use.
+
+* A fetch starts when the component using `useFetch` is mounted, when `key` changes, and when `refetch` is called.
+* Starting a fetch aborts any request still ongoing from the same `useFetch` usage.
+The same happens when the component is unmounted.
+* Once a request is aborted, its outcome must be ignored, whether that outcome is a response, an error, or the rejection caused by the abort itself.
+This also applies when the abort happens while the response body is being read.
+In particular, aborting a request must never produce an `error` status.
+* A change to `fetcher` alone does not start a fetch.
+The next fetch uses the most recent `fetcher`.
+* While a fetch is ongoing, the status is `loading`, with `stale` set to the cache entry for `key`, if one exists.
+* The returned status must always refer to the current `key`, including on the first render after `key` changes.
+* The response is `success` if `response.ok` is `true`, and `non-success` otherwise.
+* The status is `error` if `fetcher` throws or returns a rejected promise, or if reading or converting the response body fails.
+A thrown or rejection value that is not an `Error` must be wrapped in one.
+* `success` results are stored in the cache under `key`, replacing any previous entry.
+`non-success` and `error` results are not stored, and leave any previous entry unchanged.
+* When a cache entry is stored, every other mounted `useFetch` usage with the same `key` and without an ongoing fetch changes its status to that entry.
+A usage with an ongoing fetch keeps waiting for its own response, but its `stale` value reflects the new entry.
+* Requests are not shared: `useFetch` usages with the same `key` perform independent requests, even when they are concurrent.
+
+The `fetcher` function is only responsible for starting the HTTP request and returning the resulting `Response`, and must not read the response body.
+It must also pass `abortSignal` to the request (e.g., `fetch(url, {signal: abortSignal})`), so that the request can be cancelled.
+Reading the response body and converting it into a `ResponseBody` value is the responsibility of `useFetch`.
+Since a response body can only be read once, a `fetcher` that reads it would make it unavailable to `useFetch`.
+
+The `ResponseBody` is computed as follows:
+
+* If reading the body produces zero bytes, the body is empty and the kind is `none`.
+* Otherwise, if the `Content-Type` header is missing, the kind is `bytes` and `contentType` is `application/octet-stream`.
+* Otherwise, `contentType` is the header value (including any parameters), and the kind is selected by its media type, compared case-insensitively and ignoring parameters such as `charset`:
+** `application/json`, or any media type with the `+json` suffix (e.g., `application/problem+json`), produces `json`.
+If the body is not valid JSON, the status is `error`.
+** Any `text/*` media type produces `text`, decoded as UTF-8.
+** Any other media type produces `bytes`.
+
+Requirements regarding `useFetchCache` and `FetchCacheProvider`:
+
+* The cache is kept in memory and belongs to the closest enclosing `FetchCacheProvider`.
+It exists while that provider is mounted.
+Entries don't expire, and the cache has no size limit.
+* Calling `useFetch` or `useFetchCache` outside a `FetchCacheProvider` throws an `Error`.
+* `invalidate(key)` removes the cache entry for `key` and makes every mounted `useFetch` usage with that `key` start a new fetch.
+Since the entry was removed, these fetches have no `stale` value.
+* `refetch` and `invalidate` are used in different situations.
+During a `refetch`, the `loading` status keeps the cache entry for `key`, if one exists, as `stale`.
+`invalidate` is for when the cached response is known to be outdated, e.g., after a `POST` or `PUT` request changed the resource.
+
+Create a program that illustrates the usage of `useFetch`, `useFetchCache`, and `FetchCacheProvider`, including the use of `invalidate` after a request that changes a resource.
