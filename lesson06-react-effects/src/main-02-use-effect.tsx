@@ -7,6 +7,9 @@ function FetchAndShow({ uri }: { uri: string }) {
   const [respBody, setRespBody] = useState("");
   useEffect(() => {
     let ignore = false;
+    // Reset state for the new URI
+    setComplete(false);
+    setRespBody("");
     fetch(uri)
       .then((resp) => delay(5000).then(() => resp.text()))
       .then((body) => {
