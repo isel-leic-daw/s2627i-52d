@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import * as ReactDOM from "react-dom/client";
 
 type RequestState =
@@ -15,30 +15,42 @@ type Action =
   | { type: "succeed"; body: string }
   | { type: "failed"; error: Error };
 
-const TIMEOUT = 5
+const TIMEOUT = 5;
+
+function useReducer<T, A>(
+  reduce: (state: T, action: A) => T,
+  init: T
+): [T, (action: A) => void] {
+  const [current, updateState] = useState<T>(init);
+
+  function dispatch(action: A) {
+    updateState(current => reduce(current, action));
+  }
+
+  return [current, dispatch];
+}
 
 function reduce(prev: RequestState, action: Action): RequestState {
   switch (action.type) {
     case "reset":
       return { status: "pending", countdown: TIMEOUT };
     case "tick":
-      if(prev.status === "pending")
+      if (prev.status === "pending")
         return { status: "pending", countdown: prev.countdown - 1 };
       break;
     case "start":
-      if(prev.status === "pending")
-        return { status: "loading"};
+      if (prev.status === "pending") return { status: "loading" };
       break;
     case "succeed":
-      if(prev.status === "loading")
+      if (prev.status === "loading")
         return { status: "success", body: action.body };
       break;
     case "failed":
-      if(prev.status === "loading")
+      if (prev.status === "loading")
         return { status: "error", error: action.error };
       break;
   }
-  throw new Error(`Illegal action ${action.type} for state ${prev.status}`)
+  throw new Error(`Illegal action ${action.type} for state ${prev.status}`);
 }
 
 function FetchAndShow({ uri }: { uri: string }) {
@@ -55,8 +67,8 @@ function FetchAndShow({ uri }: { uri: string }) {
       await delay(TIMEOUT * 1000); // Simulate delay of TIMEOUT secs
       if (ignore) return;
       try {
-        const resp = await fetch(uri);
         dispatch({ type: "start" });
+        const resp = await fetch(uri);
         if (!resp.ok) {
           dispatch({
             type: "failed",
