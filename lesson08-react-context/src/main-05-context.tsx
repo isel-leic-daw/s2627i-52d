@@ -8,17 +8,25 @@ import {
 } from "react";
 import * as ReactDOM from "react-dom/client";
 
-type Theme = "light" | "dark";
+type ThemeStatus = "light" | "dark";
 
-const ContextTheme = createContext<Theme>("light");
+type Theme = {
+  status: ThemeStatus;
+  setTheme: (theme: ThemeStatus) => void;
+};
+
+const ContextTheme = createContext<Theme>({
+  status: "light",
+  setTheme: () => {
+    throw new Error("Unsupported operation!");
+  },
+});
 
 function Main() {
-  const [theme, setTheme] = useState<Theme>("light")
+  const [theme, setTheme] = useState<ThemeStatus>("light");
   return (
-    <ContextTheme value={theme}>
+    <ContextTheme value={{ status: theme, setTheme }}>
       <div>
-        <button onClick={() => setTheme("light")}>light</button>
-        <button onClick={() => setTheme("dark")}>dark</button>
         Main Content
         <hr></hr>
         <Panel>
@@ -36,8 +44,12 @@ function Main() {
 }
 
 function Panel({ children }: { children: ReactNode }) {
+  const theme = useContext(ContextTheme);
   return (
     <fieldset>
+      <button onClick={() => theme.setTheme("light")}>light</button>
+      <button onClick={() => theme.setTheme("dark")}>dark</button>
+      <hr></hr>
       <legend>Panel</legend>
       {children}
       <Counter></Counter>
@@ -47,7 +59,7 @@ function Panel({ children }: { children: ReactNode }) {
 
 function Counter() {
   const [count, setCount] = useState(0);
-  const theme = useContext(ContextTheme)
+  const theme = useContext(ContextTheme);
   function decHandler(): void {
     setCount(count - 1);
   }
@@ -60,7 +72,7 @@ function Counter() {
       <button onClick={decHandler}>-</button>
       {count}
       <button onClick={incHandler}>+</button>
-      Theme: {theme}
+      Theme: {theme.status}
     </>
   );
 }
