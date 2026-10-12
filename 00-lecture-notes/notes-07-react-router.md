@@ -26,73 +26,73 @@ Start `serve .` and open a new browser tab at the provided URL.
 Ensure the browser tab shows the expected content.
 
 Open the developer tools, go to the console tab and evaluate `history.length`. 
-What is the presented value?
+- **Q.1.** What is the presented value?
 
 Evaluate `history.back()` in the console tab. 
-Where is the browser tab located now?
+- **Q.2.** Where is the browser tab located now?
 
 Evaluate `history.forward()`. 
-Where is the browser located now?
+- **Q.3.** Where is the browser located now?
 
 Clear the network tab in the developer tools.
 
 Back on the console tab, evaluate `history.pushState({a: "hello"}, "", "/some/path")`.
-What is the path present in the browser tab address bar?
-Was an HTTP request performed?
+- **Q.4.** What is the path present in the browser tab address bar?
+- **Q.5.** Was an HTTP request performed?
 
 Back on the console tab, evaluate `history.pushState({a: "world"}, "", "/another/path")`.
-What is the path present in the browser tab address bar?
-Was an HTTP request performed?
+- **Q.6.** What is the path present in the browser tab address bar?
+- **Q.7.** Was an HTTP request performed?
 
 Press the browser back-button.
-What is the path present in the browser tab address bar?
-Was an HTTP request performed?
+- **Q.8.** What is the path present in the browser tab address bar?
+- **Q.9.** Was an HTTP request performed?
 
 Press the browser back-button.
-What is the path present in the browser tab address bar?
-Was an HTTP request performed?
+- **Q.10.** What is the path present in the browser tab address bar?
+- **Q.11.** Was an HTTP request performed?
 
 Press the browser forward-button.
-What is the path present in the browser tab address bar?
-Was an HTTP request performed?
+- **Q.12.** What is the path present in the browser tab address bar?
+- **Q.13.** Was an HTTP request performed?
 
 Press the browser forward-button.
-What is the path present in the browser tab address bar?
-Was an HTTP request performed?
+- **Q.14.** What is the path present in the browser tab address bar?
+- **Q.15.** Was an HTTP request performed?
 
 On the console tab, evaluate 
 ```javascript
 addEventListener("popstate", (event) => {console.log({path: location.pathname, state: history.state})})
 ```
 Press the browser back-button.
-Was an HTTP request performed?
-What is the path present in the browser tab address bar?
-What was printed in the console?
+- **Q.16.** Was an HTTP request performed?
+- **Q.17.** What is the path present in the browser tab address bar?
+- **Q.18.** What was printed in the console?
 
 Press the browser forward-button.
-Was an HTTP request performed?
-What is the path present in the browser tab address bar?
-What was printed in the console?
+- **Q.19.** Was an HTTP request performed?
+- **Q.20.** What is the path present in the browser tab address bar?
+- **Q.21.** What was printed in the console?
 
 Check that the path shown in the browser address bar is _not_ the root path (`/`).
 Refresh the browser tab.
-Was an HTTP request performed?
-If so, what is the response HTTP status code?
-Why did `serve` return that status code?
+- **Q.22.** Was an HTTP request performed?
+- **Q.23.** If so, what is the response HTTP status code?
+- **Q.24.** Why did `serve` return that status code?
 
 Restart `serve` by running `serve -s .`
 Set the browser address bar path to `/some/path` and do a tab refresh.
-What is the response HTTP status code now?
-What is the response payload?
+- **Q.25.** What is the response HTTP status code now?
+- **Q.26.** What is the response payload?
 Confirm that the response to `/some/path` is not a redirect response (3xx status code), but a 2xx status code response.
 Run `serve --help` and see what is the description for the `-s` option.
 
 Go to a Vite project, start the Vite development server by running `npm run dev`.
 Open a browser tab in the `/some/path` path.
-What is the Vite development server response, namely the status code and the response message payload?
+- **Q.27.** What is the Vite development server response, namely the status code and the response message payload?
 Change the browser's tab path to `/another/path` and repeat the process.
 Finally, change the browser's tab path to `/src/main.tsx` and repeat the process.
-What are the differences in the observed behavior?
+- **Q.28.** What are the differences in the observed behavior?
 
 ## The Browser's History API
 
@@ -297,12 +297,12 @@ The router created by `createBrowserRouter` uses the browser History API for app
 
 Start the development server with `npm run dev` and open a browser tab in the root folder.
 
-What is the component being shown?
+- **Q.29.** What is the component being shown?
 
-What happens when one of the links is clicked? Namely:
+- **Q.30.** What happens when one of the links is clicked? Namely:
 
-* What is the next component being shown?
-* Did the navigation reload the full application (check the network tab)?
+* **Q.31.** What is the next component being shown?
+* **Q.32.** Did the navigation reload the full application (check the network tab)?
 
 > **Important:** by default, browsers react to an `a` link being clicked by issuing a GET request to the URI in the `href` attribute and then reloading the current window with the content in the response payload. On a SPA, this behavior is not the desired one, since it reloads the full application, with the associated cost (time and network bandwidth). All the in-memory state is also lost during such reloads.
 
@@ -330,8 +330,8 @@ Add the following two items to the `ul` in `RootComponent`.
 ```
 
 Use the links produced by the `Link` component and compare the behavior with the links produced by the `a` element.
-What are the changes in behavior?
-How both behave regarding the browser's back and forward navigation?
+- **Q.33.** What are the changes in behavior?
+- **Q.34.** How do both behave regarding the browser's back and forward navigation?
 
 ### Template Paths and Dynamic Routes
 
