@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class DawApplication
 
 fun main(args: Array<String>) {
-	runApplication<DawApplication>(*args)
+    runApplication<DawApplication>(*args)
 }
