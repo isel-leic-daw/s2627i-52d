@@ -14,22 +14,23 @@ class App
 
 @Configuration
 class AppConfig(
-    val convUriToQrCode: MsgConverterUrlToQrCode,
     val clientIpArgumentResolver: ClientIpArgumentResolver,
+    val urlConverter: MsgConverterUrlToQrCode,
 ) : WebMvcConfigurer {
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
         super.addArgumentResolvers(resolvers)
         resolvers.add(clientIpArgumentResolver)
     }
 
-//    override fun addInterceptors(registry: InterceptorRegistry) {
-//        super.addInterceptors(registry)
-//    }
+    // override fun addInterceptors(registry: InterceptorRegistry) {
+    //    super.addInterceptors(registry)
+    //}
 
     override fun configureMessageConverters(builder: HttpMessageConverters.ServerBuilder) {
         super.configureMessageConverters(builder)
-        builder.addCustomConverter(convUriToQrCode)
+        builder.addCustomConverter(urlConverter)
     }
+
 }
 
 fun main() {

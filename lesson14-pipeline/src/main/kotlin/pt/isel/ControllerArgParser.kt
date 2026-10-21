@@ -52,7 +52,7 @@ class ControllerArgParser {
      */
     @PostMapping("/path2")
     fun handler2BodyParser(
-        @Valid @RequestBody std: StudentInputModel,
+        @RequestBody std: StudentInputModel,
     ): String = "Request to path 2 with student: $std"
 
     /**
