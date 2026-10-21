@@ -1,6 +1,5 @@
 package pt.isel
 
-import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Size
 import org.springframework.web.bind.annotation.GetMapping

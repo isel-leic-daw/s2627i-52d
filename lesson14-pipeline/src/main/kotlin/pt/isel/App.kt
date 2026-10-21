@@ -3,10 +3,8 @@ package pt.isel
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.HttpMessageConverters
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @SpringBootApplication
@@ -24,13 +22,12 @@ class AppConfig(
 
     // override fun addInterceptors(registry: InterceptorRegistry) {
     //    super.addInterceptors(registry)
-    //}
+    // }
 
     override fun configureMessageConverters(builder: HttpMessageConverters.ServerBuilder) {
         super.configureMessageConverters(builder)
         builder.addCustomConverter(urlConverter)
     }
-
 }
 
 fun main() {
