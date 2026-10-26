@@ -13,3 +13,5 @@ rootProject.name = "daw2026-52d"
 include("lesson13-spring-mcv-intro")
 include("lesson14-java-servlet")
 include("lesson14-pipeline")
+include("lesson15-movies")
+include("lesson15-spring-context")
