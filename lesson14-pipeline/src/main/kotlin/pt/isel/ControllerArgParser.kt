@@ -1,5 +1,6 @@
 package pt.isel
 
+import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.Size
 import org.springframework.web.bind.annotation.GetMapping
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
-// See https://beanvalidation.org for the Length and Min annotations.
+// See https://beanvalidation.org for the Size and Min annotations.
 
 data class StudentInputModel(
     @get:Size(min = 0, max = 10) val name: String,
@@ -51,6 +52,7 @@ class ControllerArgParser {
      */
     @PostMapping("/path2")
     fun handler2BodyParser(
+        @Valid
         @RequestBody std: StudentInputModel,
     ): String = "Request to path 2 with student: $std"
 

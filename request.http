@@ -1,0 +1,7 @@
+POST localhost:8080/path2
+Content-Type: application/json
+
+{"name":"Maria","nr":"87236", "year":2001}
+
+
+

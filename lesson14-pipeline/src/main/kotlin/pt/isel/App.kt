@@ -3,7 +3,6 @@ package pt.isel
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.converter.HttpMessageConverters
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -13,7 +12,6 @@ class App
 @Configuration
 class AppConfig(
     val clientIpArgumentResolver: ClientIpArgumentResolver,
-    val urlConverter: MsgConverterUrlToQrCode,
 ) : WebMvcConfigurer {
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
         super.addArgumentResolvers(resolvers)
@@ -23,11 +21,6 @@ class AppConfig(
     // override fun addInterceptors(registry: InterceptorRegistry) {
     //    super.addInterceptors(registry)
     // }
-
-    override fun configureMessageConverters(builder: HttpMessageConverters.ServerBuilder) {
-        super.configureMessageConverters(builder)
-        builder.addCustomConverter(urlConverter)
-    }
 }
 
 fun main() {
