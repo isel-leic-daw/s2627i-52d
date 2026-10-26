@@ -1,0 +1,22 @@
+= First Exercise Set
+
+== Introduction
+
+This document contains the exercises for the second _DAW_ exercise set.
+The solutions to these exercises must be delivered by creating the `0.2.0` tag in the group's GitHub repository, no later than *2026-11-08 23:59 (Lisbon time)* (end of week 9).
+
+== Exercises
+
+=== Exercise 1
+
+Implement one or more components for the Spring MVC pipeline, such that:
+
+* A distinct random identifier is associated with every received request.
+* A _log_ message is emitted at the start and end of the processing of each request, including the request identifier:
+    ** The log message at the start must also include the request URI, and the request method.
+    ** The log message at the end must also include the request URI, the request method, and the response status code. If the request was handled by a controller, then the log message must also include the controller's name and the handler's name.
+* Any controller's handler can get the request's identifier via a parameter of type `RequestIdentifier`.
+
+=== Exercise 2
+
+...
