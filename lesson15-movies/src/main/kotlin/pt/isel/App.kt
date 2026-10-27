@@ -49,7 +49,7 @@ fun resolveDependenciesManuallyByPropertyInjection() {
 }
 
 fun resolveDependenciesManuallyByConstructorInjection() {
-    val lister = MovieLister(MovieFinderCsv(DataSourceClientViaUrl()))
+    val lister = MovieLister(MovieFinderCsv(DataSourceClientViaFile()))
     lister
         .moviesDirectedBy("nolan")
         .take(5)

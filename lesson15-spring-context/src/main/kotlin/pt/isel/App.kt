@@ -28,16 +28,8 @@ class AppConfigViaWeb {
 fun main() {
     val context =
         AnnotationConfigApplicationContext().also { ctx ->
-            ctx.environment.setActiveProfiles("viaFile")
+            ctx.environment.setActiveProfiles("viaWeb")
             ctx.scan("pt.isel")
-//            ctx.registerBean(
-//                DataSourceClientViaFile::class.java,
-//                BeanDefinitionCustomizer { it.scope = BeanDefinition.SCOPE_PROTOTYPE },
-//            )
-//            ctx.registerBean(
-//                MovieLister::class.java,
-//                BeanDefinitionCustomizer { it.scope = BeanDefinition.SCOPE_PROTOTYPE },
-//            )
             ctx.refresh()
         }
     println(context.getBean(DataSourceClient::class.java))
