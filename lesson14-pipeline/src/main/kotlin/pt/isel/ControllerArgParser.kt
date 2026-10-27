@@ -20,7 +20,9 @@ data class StudentInputModel(
 )
 
 @RestController
-class ControllerArgParser {
+class ControllerArgParser(
+    val greetings: ServiceGreetings,
+) {
     /**
      * Example of a route with query-string parameters
      * Try with:
