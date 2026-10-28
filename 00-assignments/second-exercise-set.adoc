@@ -19,4 +19,10 @@ Implement one or more components for the Spring MVC pipeline, such that:
 
 === Exercise 2
 
-...
+
+=== Exercise 2
+
+Create a copy of the example
+link:https://github.com/isel-leic-daw/s2627i-52d/tree/main/tic-tac-toe[`tic-tac-toe`]
+project with the additional tests and functionality described in
+link:https://github.com/isel-leic-daw/s2627i-52d/blob/main/00-lecture-notes/notes-13-backend-organization.md#exercises[Lecture notes 13 - Exercises].
