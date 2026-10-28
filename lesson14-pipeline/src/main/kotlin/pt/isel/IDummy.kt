@@ -1,5 +1,3 @@
 package pt.isel
 
-interface IDummy {
-
-}
+interface IDummy
