@@ -15,3 +15,8 @@ include("lesson14-java-servlet")
 include("lesson14-pipeline")
 include("lesson15-movies")
 include("lesson15-spring-context")
+
+// Build the subproject individually:
+// > ./gradlew -p tic-tac-toe clean build
+//
+includeBuild("tic-tac-toe")

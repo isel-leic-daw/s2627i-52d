@@ -1,0 +1,134 @@
+@baseUrl = http://localhost:8180/api
+@password = changeit
+
+### Create a user
+< {%
+    client.global.set("username", "user-" + Date.now())
+%}
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+> {%
+    client.test("user created", function () {
+        client.assert(response.status === 201, "Expected HTTP 201");
+        client.assert(response.headers.valueOf("Location") !== undefined, "Expected a Location header");
+    });
+    client.global.set("userId", response.headers.valueOf("Location").split("/").pop());
+%}
+
+### Get a user by ID
+GET {{baseUrl}}/users/{{userId}}
+
+> {%
+    client.test("user returned", function () {
+        client.assert(response.status === 200, "Expected HTTP 200");
+        client.assert(response.body.username === client.global.get("username"), "Expected the created username");
+    });
+%}
+
+### Get a missing user
+GET {{baseUrl}}/users/2147483647
+
+> {%
+    client.test("missing user returns 404", function () {
+        client.assert(response.status === 404, "Expected HTTP 404");
+    });
+%}
+
+### Create an authentication token
+POST {{baseUrl}}/users/token
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+> {%
+    client.test("token created", function () {
+        client.assert(response.status === 200, "Expected HTTP 200");
+        client.assert(response.body.token !== undefined, "Expected a token in the response");
+    });
+    client.global.set("token", response.body.token);
+%}
+
+### Get the authenticated user's home using a bearer token
+GET {{baseUrl}}/me
+Authorization: Bearer {{token}}
+
+> {%
+    client.test("authenticated home returned", function () {
+        client.assert(response.status === 200, "Expected HTTP 200");
+        client.assert(response.body.username === client.global.get("username"), "Expected the authenticated username");
+    });
+%}
+
+### Get the authenticated user's home using a cookie
+GET {{baseUrl}}/me
+Cookie: token={{token}}
+
+> {%
+    client.test("cookie authentication accepted", function () {
+        client.assert(response.status === 200, "Expected HTTP 200");
+    });
+%}
+
+### Log out
+POST {{baseUrl}}/logout
+Authorization: Bearer {{token}}
+
+> {%
+    client.test("logout succeeded", function () {
+        client.assert(response.status === 204, "Expected HTTP 204");
+    });
+%}
+
+### Verify the revoked token is rejected
+GET {{baseUrl}}/me
+Authorization: Bearer {{token}}
+
+> {%
+    client.test("revoked token rejected", function () {
+        client.assert(response.status === 401, "Expected HTTP 401");
+    });
+%}
+
+### Get the server hostname
+GET {{baseUrl}}/status/hostname
+
+> {%
+    client.test("hostname returned", function () {
+        client.assert(response.status === 200, "Expected HTTP 200");
+    });
+%}
+
+### Get the server IP address
+GET {{baseUrl}}/status/ip
+
+> {%
+    client.test("IP address returned", function () {
+        client.assert(response.status === 200, "Expected HTTP 200");
+    });
+%}
+
+### Send a chat message
+POST {{baseUrl}}/chat/send
+Content-Type: text/plain
+
+Hello from the HTTP client
+
+> {%
+    client.test("chat message sent", function () {
+        client.assert(response.status === 200, "Expected HTTP 200");
+    });
+%}
+
+### Listen for chat events (long-lived SSE connection)
+# Run this request separately, then send a chat message from another request/client.
+GET {{baseUrl}}/chat/listen
+Accept: text/event-stream

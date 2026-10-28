@@ -1,0 +1,161 @@
+package pt.isel.daw.tictactoe.domain.games
+
+import pt.isel.daw.tictactoe.domain.users.User
+import java.util.UUID
+import kotlin.time.Clock
+import kotlin.time.Duration
+import kotlin.time.Instant
+
+class GameLogic(
+    private val clock: Clock,
+    private val timeout: Duration,
+) {
+    fun createNewGame(
+        playerX: User,
+        playerO: User,
+    ): Game {
+        val now = clock.now()
+        return Game(
+            id = UUID.randomUUID(),
+            state = Game.State.NEXT_PLAYER_X,
+            board = Board.create(),
+            created = now,
+            updated = now,
+            deadline = now + timeout,
+            playerX = playerX,
+            playerO = playerO,
+        )
+    }
+
+    fun applyRound(
+        game: Game,
+        round: Round,
+    ): RoundResult {
+        if (round.player.id != game.playerO.id && round.player.id != game.playerX.id) {
+            return RoundResult.NotAPlayer
+        }
+        val now = clock.now()
+        return when (game.state) {
+            Game.State.PLAYER_X_WON -> RoundResult.GameAlreadyEnded
+            Game.State.PLAYER_O_WON -> RoundResult.GameAlreadyEnded
+            Game.State.DRAW -> RoundResult.GameAlreadyEnded
+            Game.State.NEXT_PLAYER_X -> applyRound(game, round, now, PLAYER_X_LOGIC)
+            Game.State.NEXT_PLAYER_O -> applyRound(game, round, now, PLAYER_O_LOGIC)
+        }
+    }
+
+    private fun applyRound(
+        game: Game,
+        round: Round,
+        now: Instant,
+        aux: PlayerLogic,
+    ): RoundResult =
+        // The deadline is checked first, so that the game also ends when the opponent of the
+        // player that failed to play on time submits a round
+        if (game.deadline != null && now > game.deadline) {
+            val newGame = game.copy(state = aux.otherWon, updated = now, deadline = null)
+            if (aux.isTurn(game, round.player)) {
+                RoundResult.TooLate(newGame)
+            } else {
+                RoundResult.OpponentTooLate(newGame)
+            }
+        } else {
+            if (!aux.isTurn(game, round.player)) {
+                RoundResult.NotYourTurn
+            } else {
+                if (game.board.canPlayOn(round.position)) {
+                    val newBoard = game.board.mutate(round.position, aux.boardState)
+                    if (newBoard.hasWon(aux.boardState)) {
+                        val newGame =
+                            game.copy(board = newBoard, state = aux.iWon, updated = now, deadline = null)
+                        RoundResult.YouWon(newGame)
+                    } else {
+                        if (newBoard.isFull()) {
+                            val newGame =
+                                game.copy(
+                                    board = newBoard,
+                                    state = Game.State.DRAW,
+                                    updated = now,
+                                    deadline = null,
+                                )
+                            RoundResult.Draw(newGame)
+                        } else {
+                            val newGame =
+                                game.copy(
+                                    board = newBoard,
+                                    state = aux.nextPlayer,
+                                    updated = now,
+                                    deadline = now + timeout,
+                                )
+                            RoundResult.OthersTurn(newGame)
+                        }
+                    }
+                } else {
+                    RoundResult.PositionNotAvailable
+                }
+            }
+        }
+
+    class PlayerLogic(
+        val isTurn: (game: Game, user: User) -> Boolean,
+        val otherWon: Game.State,
+        val iWon: Game.State,
+        val nextPlayer: Game.State,
+        val boardState: Board.State,
+    )
+
+    companion object {
+        private val PLAYER_X_LOGIC =
+            PlayerLogic(
+                isTurn = { game, user -> game.isPlayerX(user) },
+                otherWon = Game.State.PLAYER_O_WON,
+                iWon = Game.State.PLAYER_X_WON,
+                nextPlayer = Game.State.NEXT_PLAYER_O,
+                boardState = Board.State.PLAYER_X,
+            )
+        private val PLAYER_O_LOGIC =
+            PlayerLogic(
+                isTurn = { game, user -> game.isPlayerO(user) },
+                otherWon = Game.State.PLAYER_X_WON,
+                iWon = Game.State.PLAYER_O_WON,
+                nextPlayer = Game.State.NEXT_PLAYER_X,
+                boardState = Board.State.PLAYER_O,
+            )
+    }
+}
+
+sealed class RoundResult {
+    data object NotYourTurn : RoundResult()
+
+    data object GameAlreadyEnded : RoundResult()
+
+    data object NotAPlayer : RoundResult()
+
+    data object PositionNotAvailable : RoundResult()
+
+    data class TooLate(
+        val game: Game,
+    ) : RoundResult()
+
+    // The opponent didn't play before the deadline, so the game ended with the round's player as the winner.
+    // The round's position is not applied to the board.
+    data class OpponentTooLate(
+        val game: Game,
+    ) : RoundResult()
+
+    data class YouWon(
+        val game: Game,
+    ) : RoundResult()
+
+    data class OthersTurn(
+        val game: Game,
+    ) : RoundResult()
+
+    data class Draw(
+        val game: Game,
+    ) : RoundResult()
+}
+
+private fun Game.isPlayerX(player: User) = this.playerX.id == player.id
+
+private fun Game.isPlayerO(player: User) = this.playerO.id == player.id
