@@ -1,3 +1,9 @@
+# Connect postgres client with:
+# - from the container: psql  -U dbuser -d db
+# - from the host:
+#   > docker exec -it db-tests bash
+#   > psql  -U dbuser -d db
+#
 services:
   db-tests:
     container_name: db-tests
