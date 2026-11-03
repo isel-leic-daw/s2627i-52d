@@ -278,7 +278,7 @@ asserting properties of the HTTP responses. For that it uses:
 
 ### Setting up the environment
 
-- Checkout the latest commit in the `main` branch of the `s2627i-51d-51n`
+- Checkout the latest commit in the `main` branch of the `s2627i-52d`
   repository.
 - Open one or more shells in the `code/jvm/tic-tac-toe` folder.
 - Open the `tic-tac-toe` Gradle-based project in Intellij.
