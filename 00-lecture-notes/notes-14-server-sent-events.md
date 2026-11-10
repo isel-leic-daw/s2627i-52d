@@ -173,3 +173,33 @@ The handlers for received events are called with a [`MessageEvent`](https://deve
    endpoint response. What changes when the client is loaded from the Vite
    development server?
 
+## Spring MVC support
+
+The project `tic-tac-toe` contains the
+`pt.isel.daw.tictactoe.http.ChatController` showing how a handler can:
+
+- Create an `SseEmitter` instance, representing an SSE connection.
+- Return that instance from the handler, informing Spring MVC that the response
+  uses the `text/event-stream` media type.
+- Send events through the `SseEmitter`, after the handler has already returned.
+- Detect conditions that may occur, such as the inability to write in the response socket or the SSE _connection ending_, via the `onError` and `onCompletion` callbacks.
+
+## Spring MVC support - Exercises
+
+1. Run the `tic-tac-toe` Spring web application. Do not forget:
+   - Docker is running the required DB container
+   - Set environment variable `DB_URL` with the required connection string.
+2. Open `http://localhost:8180/api/chat/listen` in a browser and inspect the
+   events in the response.
+   - **Q.1.** What SSE output does the server produce?
+3. Send a chat message with a `POST` request to `/api/chat/send` whose body is
+   the message text.  
+   Confirm that the message appears in the browser opened in step 2.
+4. Close the browser tab displaying the event stream while the server is still
+   running. Observe the Spring application logs.
+   - **Q.2.** Trace the connection cleanup paths shown in the code. 
+   - **Q.3.** What do the `onCompletion` and `onError` callbacks do?
+   - **Q.4.** How can a failed event write cause the emitter to be removed?
+5. **Q.5.** For each SSE-emitter requirement identified in **Q.1.** of **The Server-Sent
+   Events - Exercises**, identify its corresponding role in the Spring MVC
+   implementation of the SSE handler.
