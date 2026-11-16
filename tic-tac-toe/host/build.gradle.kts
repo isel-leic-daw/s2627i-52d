@@ -43,6 +43,12 @@ tasks.test {
     finalizedBy(":repository-jdbi:dbTestsDown")
 }
 
+tasks.bootRun {
+    if (System.getenv("DB_URL") == null) {
+        environment("DB_URL", "jdbc:postgresql://localhost:5432/db?user=dbuser&password=changeit")
+    }
+}
+
 kotlin {
     jvmToolchain(21)
 }
