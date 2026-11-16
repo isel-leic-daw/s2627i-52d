@@ -1,0 +1,68 @@
+= Final Project Requirements
+
+== Introduction
+
+This document contains the general requirements for the DAW final project, 2026
+Fall semester.
+
+The project's goal is the creation of a Web-based system to provide
+functionality similar to link:https://chatgpt.com[ChatGPT]: a system where end
+users can create, use, and manage _chats_ based on Large Language Models (LLM).
+
+Users should be able to create new chats, add new messages on existing chats,
+see the history of previous chats, and perform other related tasks.
+
+== System architecture
+
+The system is composed by two main components:
+
+* A _Frontend Application_, running on the end user browsers and responsible for
+all the user interface. * A _Backend Component_, running on servers and
+responsible for:
+    ** Storing user information, including their chats. ** Enforcing business
+    rules such as token spending limits, model restrictions, and others. **
+    Storing the credentials required to access external LLM inference APIs. **
+    Exposing an API for the frontend application. ** Interacting with external
+    LLM inference APIs. ** Authenticate and authorize user interactions.
+
+=== Frontend Application
+
+The Frontend Application_ should run on the end users's browser. It should be
+possible to open this from any browser, login as an user, and immediately have
+access to all chats associated to that user.
+
+The Frontend Application_ should not directly use the external inference API
+providers. Instead, it should delegate most of the persistence, inference, and
+other domain tasks to the Backend Component. The Frontend Application_ should
+interact with the Backend Component via an HTTP-based API.
+
+=== Backend Component
+
+The Backend Component_ is composed by a mostly-stateless JVM-based application,
+a link:https://www.postgresql.org/[PostgreSQL] DataBase Management System (DBMS)
+and other required sub-components, such as a reverse-proxy or load-balancer. The
+API exposed by the Backend Component should use the HTTP protocol, including
+support for SSE (Server-sent events).
+
+The Backend Component is responsible for the interaction with external systems,
+such as the LLM-based inference providers or email delivery systems.
+
+The Backend Component should ensure the durability, confidentiality, and
+integrity of all the information, namely by enforcing all the relevant domain
+rules. From a security perspective, the Frontend Application should be
+considered untrusted and all its requests must verified by the Backend
+Component.
+
+== Functional requirements
+
+The detailed functional requirements should be proposed by each student group,
+documented in the group's repository, and discussed with the teaching staff.
+
+== Important Dates
+
+The project should be delivered, via the creation of a 1.0.0 tag in the group's
+repository, until 2026-12-13 (end of week 14).
+
+The first version of the functional requirements should be present in the
+students repository until 2026-11-15. The plan is to discuss those requirements
+during week 11 (between 2026-11-16 and 2026-11-20). 
