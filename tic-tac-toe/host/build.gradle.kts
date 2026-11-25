@@ -80,12 +80,18 @@ val dockerImageTagNginx = "tic-tac-toe-nginx"
 val dockerImageTagPostgresTest = "tic-tac-toe-postgres-test"
 val dockerImageTagUbuntu = "tic-tac-toe-ubuntu"
 
+tasks.register<Sync>("copyStaticAssets") {
+    from(layout.projectDirectory.dir("../../lesson19-EventSource/dist"))
+    into(layout.projectDirectory.dir("tests/html"))
+}
+
 tasks.register<Exec>("buildImageJvm") {
     dependsOn("extractUberJar")
     commandLine("docker", "build", "-t", dockerImageTagJvm, "-f", "tests/Dockerfile-jvm", ".")
 }
 
 tasks.register<Exec>("buildImageNginx") {
+    dependsOn("copyStaticAssets")
     commandLine("docker", "build", "-t", dockerImageTagNginx, "-f", "tests/Dockerfile-nginx", ".")
 }
 
