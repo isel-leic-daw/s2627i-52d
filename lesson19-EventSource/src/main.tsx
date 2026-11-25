@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 
-const SSE_URL = "https://httpbun.com/sse" // Using the httpbun.com test server
+// const SSE_URL = "https://httpbun.com/sse" // Using the httpbun.com test server
 // const SSE_URL = "http://localhost:4000/sse/listen"; // Using the local demo
+const SSE_URL = "/api/chat/listen"
 
 const READY_STATE_MAP = ["CONNECTING", "OPEN", "CLOSED"];
 
@@ -48,7 +49,9 @@ export function App() {
     }
     eventSource.addEventListener("foo", handleMessageEvent);
     eventSource.addEventListener("ping", handleMessageEvent);
+    eventSource.addEventListener("message", handleMessageEvent);
     
+
     return () => {
       eventSource.close();
     };

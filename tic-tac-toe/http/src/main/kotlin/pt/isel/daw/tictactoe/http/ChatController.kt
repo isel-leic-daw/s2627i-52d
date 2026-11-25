@@ -1,5 +1,6 @@
 package pt.isel.daw.tictactoe.http
 
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -12,6 +13,10 @@ import java.util.concurrent.TimeUnit
 class ChatController(
     private val chatService: ChatService,
 ) {
+    /*
+     * DON'T use next approach for a Web APP Frontend.
+     */
+    // @CrossOrigin(origins = ["*"])
     @GetMapping(Uris.Chat.LISTEN)
     fun listen(): SseEmitter {
         val sseEmitter = SseEmitter(TimeUnit.HOURS.toMillis(1))
